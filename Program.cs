@@ -21,9 +21,20 @@
 
         Console.WriteLine("5. feladat: Sztatisztika");
         kifejezesek.Where(x => szurtMuveletek.Contains(x.Muvelet)).GroupBy(x => x.Muvelet).ToList().ForEach(x => Console.WriteLine($"\t{x.Key} - {x.Count()} db"));
+
+        Console.Write("7. feladat: Kérek egy kifejezést: ");
+        string be = Console.ReadLine();
+        do
+        {
+            Console.WriteLine($"{be} = {Megold(new Kifejezes(be))}");
+            Console.Write("7. feladat: Kérek egy kifejezést: ");
+            be = Console.ReadLine();
+        } while (be != "vége");
+
+        File.WriteAllLines("eredmenyek.txt", kifejezesek.Select(x => $"{x.ElsoOperandus} {x.Muvelet} {x.MasodikOperandus} = {Megold(x)}"));
     }
 
-    public string Megold(Kifejezes kifejezes)
+    public static string Megold(Kifejezes kifejezes)
     {
         try
         {
