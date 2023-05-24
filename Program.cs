@@ -1,5 +1,7 @@
 ﻿internal class Program
 {
+    static string[] szurtMuveletek = {"mod", "/", "div", "-", "*", "+"};
+
     private static void Main(string[] args)
     {
         List<Kifejezes> kifejezesek = File.ReadAllLines("kifejezesek.txt").Select(x => new Kifejezes(x)).ToList();
@@ -15,6 +17,37 @@
         else
         {
             Console.WriteLine("4. feladat: Van ilyen kifejezés");
+        }
+
+        Console.WriteLine("5. feladat: Sztatisztika");
+        kifejezesek.Where(x => szurtMuveletek.Contains(x.Muvelet)).GroupBy(x => x.Muvelet).ToList().ForEach(x => Console.WriteLine($"\t{x.Key} - {x.Count()} db"));
+    }
+
+    public string Megold(Kifejezes kifejezes)
+    {
+        try
+        {
+            switch (kifejezes.Muvelet)
+            {
+                case "mod":
+                    return Convert.ToString(kifejezes.ElsoOperandus % kifejezes.MasodikOperandus);
+                case "/":
+                    return Convert.ToString(Convert.ToDouble(kifejezes.ElsoOperandus) / kifejezes.MasodikOperandus);
+                case "div":
+                    return Convert.ToString(kifejezes.ElsoOperandus / kifejezes.MasodikOperandus);
+                case "-":
+                    return Convert.ToString(kifejezes.ElsoOperandus - kifejezes.MasodikOperandus);
+                case "*":
+                    return Convert.ToString(kifejezes.ElsoOperandus * kifejezes.MasodikOperandus);
+                case "+":
+                    return Convert.ToString(kifejezes.ElsoOperandus + kifejezes.MasodikOperandus);
+                default:
+                    return "Hibás operátor";
+            }
+        }
+        catch
+        {
+            return "Egyéb hiba";
         }
     }
 }
